@@ -1,9 +1,10 @@
 import re
 import argparse
 
-# # REGULAR EXPRESSIONS
-# init_pattern = r'\(:init(\(clear\w{1}\)|\(ontable\w{1}\)|\(on\w{2}\)|\(handempty\))+\)'
-# init_regex = re.compile(init_pattern, )
+BREADTH = 0
+DEPTH = 1
+BEST = 2
+ASTAR = 3
 
 
 def parse_arguments():
@@ -15,10 +16,12 @@ def parse_arguments():
                         help='Name of the input file.')
     # parser.add_argument('-o', '--output', type=str,
     #                     help='Name of the output file.')
+    parser.add_argument('-m', '--method', type=str,
+                        help='Searching method: 1)depth = depth first search, 2) breadth = breadth first search, 3)best = best first search, astar = astar algorithm')
 
     args = parser.parse_args()
 
-    return args.input
+    return args.input, args.method
 
 
 def load_problem(input=r'.\problems\probBLOCKS-4-0.pddl.txt'):

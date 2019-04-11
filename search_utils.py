@@ -1,39 +1,24 @@
-from data_structures import TreeNode, DoubleLinkedList
+from tree_node import TreeNode
+from utils import BREADTH, DEPTH, BEST, ASTAR
 
 
-def initialize_search(world, list):
+def initialize_search(world, queue):
     root = TreeNode(world, None)
-    # print('Root:', root)
-    #root.h = heuristic(root.world)
 
-    list.add_node_front(root)
-    # print('list.head:', list.head.tree_node)
+    queue.put(root)
 
 
-def search(list):
-    step = 0
-    while list.head != None:
-        current = list.head
-        print('Current:', current)
+def search(queue, method):
+    while not queue.empty():
+        current = queue.get()
 
-        if current.tree_node.world.is_world_the_goal():
-            print(step)
-            return current.tree_node
+        if current.world.is_world_the_goal():
+            return current
 
-        temp_node = list.head
-        list.head = list.head.next
-        del temp_node
+        current.find_children()
 
-        if list.head == None:
-            list.tail == None
-
-        current.tree_node.find_children()
-
-        for child in current.tree_node.children:
-            if child != []:
-                list.add_node_front(child)
-
-        step += 1
+        for child in current.children:
+            queue.put(child)
 
     return None
 

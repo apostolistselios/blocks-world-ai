@@ -26,7 +26,7 @@ class World(object):
 
             for block in blocks:
                 if position == 'CLEAR':
-                    pos = self.get_block_index(block.id)
+                    pos = self.get_block_index(block_id)
                     blocks[pos].clear = True
                 elif position == 'ONTABLE':
                     pos = self.get_block_index(block_id)
@@ -35,10 +35,10 @@ class World(object):
                     pos1 = self.get_block_index(block1_id)
                     pos2 = self.get_block_index(block2_id)
 
-                    blocks[pos1].on_block = self.blocks[pos2].id
+                    blocks[pos1].on_block = blocks[pos2].id
                     blocks[pos1].on_table = False
 
-                    if self.blocks[pos2].clear:
+                    if blocks[pos2].clear:
                         blocks[pos2].clear = False
 
         return blocks
@@ -67,7 +67,6 @@ class World(object):
                 copy_blocks[pos2].clear = True
 
                 temp_world = World(copy_blocks, self.goal_state)
-                # print('1:', temp_world)
                 moves.append(temp_world)
 
                 for block_ in clear:
@@ -85,7 +84,6 @@ class World(object):
                         copy_blocks[pos3].clear = False
 
                         temp_world = World(copy_blocks, self.goal_state)
-                        # print('2:', temp_world)
                         moves.append(temp_world)
 
             elif block.on_table:
@@ -103,7 +101,6 @@ class World(object):
                         copy_blocks[pos2].clear = False
 
                         temp_world = World(copy_blocks, self.goal_state)
-                        # print('3:', temp_world)
                         moves.append(temp_world)
 
         return moves
@@ -118,8 +115,10 @@ class World(object):
         return True
 
     def is_world_the_goal(self):
+        copy_blocks = [copy.copy(block) for block in self.blocks]
         goal_state_blocks = self.initialize_blocks(
-            self.goal_state, copy.copy(self.blocks))
+            self.goal_state, copy_blocks)
+
         temp_world = World(goal_state_blocks, self.goal_state)
 
         if self.are_worlds_equal(temp_world):

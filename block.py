@@ -6,9 +6,6 @@ class Block(object):
         self.on_table = on_table
         self.on_block = on_block
 
-    # def get_position(self):
-    #     return self.on_table, self.on_block, self.clear
-
     def __str__(self):
         return f'Block: {self.id}'
 
