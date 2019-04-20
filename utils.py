@@ -1,10 +1,13 @@
 import re
 import argparse
+from queue import Queue, LifoQueue
 
-BREADTH = 0
-DEPTH = 1
-BEST = 2
-ASTAR = 3
+METHODS = {
+    'breadth': Queue(),
+    'depth': LifoQueue(),
+    'best': None,
+    'astar': None
+}
 
 
 def parse_arguments():
@@ -12,19 +15,19 @@ def parse_arguments():
     """
 
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('-i', '--input', type=str,
-                        help='Name of the input file.')
+    parser.add_argument('-i', '--input', type=str, default=r'.\problems\probBLOCKS-4-0.pddl.txt',
+                        help='Name of the input file. Default=".\problems\probBLOCKS-4-0.pddl.txt"')
     # parser.add_argument('-o', '--output', type=str,
     #                     help='Name of the output file.')
-    parser.add_argument('-m', '--method', type=str,
-                        help='Searching method: 1)depth = depth first search, 2) breadth = breadth first search, 3)best = best first search, astar = astar algorithm')
+    parser.add_argument('-m', '--method', type=str, default='depth',
+                        help='Searching method: 1)depth = depth first search, 2) breadth = breadth first search, 3)best = best first search, 4)astar = astar algorithm. Default=depth.')
 
-    args = parser.parse_args()
-
-    return args.input, args.method
+    return parser.parse_args()
 
 
-def load_problem(input=r'.\problems\probBLOCKS-4-0.pddl.txt'):
+def load_problem(input):
+    """ Loads the problem from the input file. """
+
     data = []
     with open(input, 'r') as file:
         raw_data = file.readlines()
@@ -36,6 +39,8 @@ def load_problem(input=r'.\problems\probBLOCKS-4-0.pddl.txt'):
 
 
 def get_initial_state(data):
+    """ Extracts the initial state from the data of the input file. """
+
     flag = False
     initial_state = []
 
@@ -54,6 +59,7 @@ def get_initial_state(data):
 
 
 def get_goal_state(data):
+    """ Extracts the goal state from the data of the input file. """
     flag = False
     goal_state = []
 
@@ -67,6 +73,8 @@ def get_goal_state(data):
 
 
 def get_objects_from_file(data):
+    """ Extracts how many and which block objects the problem needs. """
+
     for i, line in enumerate(data):
         if re.match(r'\A\(:object', line):
             match = re.search(r'(?<=\(:objects)-(\w-)+', data[i])

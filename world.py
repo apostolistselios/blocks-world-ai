@@ -12,6 +12,15 @@ class World(object):
     def __repr__(self):
         return repr(self.blocks)
 
+    def __eq__(self, other):
+        for sblock in self.blocks:
+            for oblock in other.blocks:
+                if sblock.id == oblock.id:
+                    if not sblock == oblock:
+                        return False
+
+        return True
+
     def get_block_index(self, id):
         for i, block in enumerate(self.blocks):
             if id == block.id:
@@ -105,15 +114,6 @@ class World(object):
 
         return moves
 
-    def are_worlds_equal(self, world):
-        for block in self.blocks:
-            for block_ in world.blocks:
-                if block.id == block_.id:
-                    if not (block.clear == block_.clear and block.on_table == block_.on_table and block.on_block == block_.on_block):
-                        return False
-
-        return True
-
     def is_world_the_goal(self):
         copy_blocks = [copy.copy(block) for block in self.blocks]
         goal_state_blocks = self.initialize_blocks(
@@ -121,7 +121,7 @@ class World(object):
 
         temp_world = World(goal_state_blocks, self.goal_state)
 
-        if self.are_worlds_equal(temp_world):
+        if self == temp_world:
             return True
 
         del temp_world

@@ -1,5 +1,4 @@
 from tree_node import TreeNode
-from utils import BREADTH, DEPTH, BEST, ASTAR
 
 
 def initialize_search(world, queue):
@@ -9,13 +8,16 @@ def initialize_search(world, queue):
 
 
 def search(queue, method):
+    visited_nodes = []
+
     while not queue.empty():
         current = queue.get()
 
         if current.world.is_world_the_goal():
             return current
 
-        current.find_children()
+        visited_nodes.append(current)
+        current.find_children(visited_nodes)
 
         for child in current.children:
             queue.put(child)

@@ -6,7 +6,6 @@ Created on Apr 4, 2019
 
 import os
 import utils
-from queue import Queue, LifoQueue
 from search_utils import initialize_search, search
 from block import Block
 from world import World
@@ -15,27 +14,10 @@ from world import World
 def main():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    input_file, method = utils.parse_arguments()
+    args = utils.parse_arguments()
 
-    if method == None:
-        print('Please specify a searching method: -m <method>.')
-        exit(1)
-    elif method == 'breadth':
-        method = utils.BREADTH
-        queue = Queue()
-    elif method == 'depth':
-        method = utils.DEPTH
-        queue = LifoQueue()
-    elif method == 'best':
-        method = utils.BEST
-    else:
-        method = utils.ASTAR
-
-    if input_file != None:
-        data = utils.load_problem(input_file)
-    else:
-        data = utils.load_problem()
-
+    search_queue = utils.METHODS[args.method]
+    data = utils.load_problem(args.input)
     objects = utils.get_objects_from_file(data)
     initial_state = utils.get_initial_state(data)
     goal_state = utils.get_goal_state(data)
@@ -49,8 +31,8 @@ def main():
     world.blocks = world.initialize_blocks(world.initial_state,  world.blocks)
     print('WORLD:', world)
 
-    initialize_search(world, queue)
-    solution_node = search(queue, method)
+    initialize_search(world, search_queue)
+    solution_node = search(search_queue, args.method)
     print(f'Solution: {solution_node}')
 
     if solution_node != None:
