@@ -41,12 +41,17 @@ class TreeNode(object):
         for child in self.children:
             child.g = child.parent.g + 1
 
+    def heuristic_1(self):
+        """Score the nodes depending on how many blocks are on their goal position."""
+
+        pass
+
     def route_to_root(self):
         temp_node = copy.copy(self)
         solution_length = self.g
         print('Printing solution')
 
-        while temp_node.parent != None:
+        while temp_node.parent is not None:
             print(temp_node.world)
             temp_node = temp_node.parent
 

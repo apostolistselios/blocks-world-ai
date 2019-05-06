@@ -1,12 +1,12 @@
 import re
 import argparse
-from queue import Queue, LifoQueue
+from queue import Queue, LifoQueue, PriorityQueue
 
 METHODS = {
     'breadth': Queue(),
     'depth': LifoQueue(),
-    'best': None,
-    'astar': None
+    'best': PriorityQueue(),
+    'astar': PriorityQueue()
 }
 
 
@@ -20,7 +20,8 @@ def parse_arguments():
     # parser.add_argument('-o', '--output', type=str,
     #                     help='Name of the output file.')
     parser.add_argument('-m', '--method', type=str, default='depth',
-                        help='Searching method: 1)depth = depth first search, 2) breadth = breadth first search, 3)best = best first search, 4)astar = astar algorithm. Default=depth.')
+                        help='Searching method: 1)depth = depth first search, 2) breadth = breadth '
+                        + 'first search, 3)best = best first search, 4)astar = astar algorithm. Default=depth.')
 
     return parser.parse_args()
 

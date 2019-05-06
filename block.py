@@ -13,7 +13,7 @@ class Block(object):
         return f'(Block {self.id}:{self.clear}, {self.on_table}, {self.on_block})'
 
     def __eq__(self, other):
-        return self.id == other.id and self.clear == other.clear and self.on_table == other.on_table and self.on_block == other.on_block
+        return (self.id, self.clear, self.on_table, self.on_block) == (other.id, other.clear, other.on_table, other.on_block)
 
 
 if __name__ == '__main__':
