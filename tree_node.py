@@ -4,47 +4,46 @@ import copy
 class TreeNode(object):
     """ Implements a TreeNode class used in the search algorithms."""
 
-    def __init__(self, world, parent):
-        self.world = world
+    def __init__(self, state, parent, h, g, f):
+        self.state = state
         self.parent = parent
-        self.h = 0
-        self.g = 0
-        self.f = 0
+        self.h = h
+        self.g = g
+        self.f = f
         self.children = []
 
-    def __repr__(self):
-        """ Representation of TreeNode object. """
-
-        return f'W:{self.world}, G:{self.g}'
-
-    def __eq__(self, other):
-        """ Equal operation on TreeNode object. """
-
-        if other != None:
-            return self.world == other.world
-
-    def find_children(self, visited_nodes):
+    def find_children(self, method):
         """ Finds the children of a TreeNode object. If the child
         has been already visited is not added to the object's children list.
 
         params: visited_nodes
         """
+        children = self.state.get_possible_moves()
+        for state in children:
+            g = self.g + 1
+            if method == 'astar':
+                h = self.heuristic_1(state)
+                f = h + g
+                self.children.append(TreeNode(state, self, h=h, g=g, f=f))
+                continue
 
-        children = self.world.get_possible_moves()
+            self.children.append(TreeNode(state, self, h=0, g=g, f=0))
 
-        for world in children:
-            node = TreeNode(world=world, parent=self)
+        # for child in self.children:
+        #     child.g = child.parent.g + 1
+        #     if method == 'astar':
+        #         child.h = self.heuristic_1()
+        #         child.f = child.h + child.g
 
-            if not node in visited_nodes:
-                self.children.append(node)
-
-        for child in self.children:
-            child.g = child.parent.g + 1
-
-    def heuristic_1(self):
+    def heuristic_1(self, state):
         """Score the nodes depending on how many blocks are on their goal position."""
+        score = 0
 
-        pass
+        for block in state.i_blocks:
+            if not state.i_blocks[block] == state.g_blocks[block]:
+                score += 1
+
+        return score
 
     def route_to_root(self):
         temp_node = copy.copy(self)
@@ -52,8 +51,24 @@ class TreeNode(object):
         print('Printing solution')
 
         while temp_node.parent is not None:
-            print(temp_node.world)
+            print(temp_node.state)
             temp_node = temp_node.parent
+
+    def __repr__(self):
+        """ Representation of TreeNode object. """
+
+        return f'{self.state},G={self.g}'
+
+    def __lt__(self, other):
+        """ Larger than operation of TreeNode object. """
+
+        return self.f < other.f
+
+    def __eq__(self, other):
+        """ Equal operation on TreeNode object. """
+
+        if other is not None:
+            return self.state == other.state
 
 
 if __name__ == '__main__':

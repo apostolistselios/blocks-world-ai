@@ -1,24 +1,33 @@
 from tree_node import TreeNode
 
 
-def initialize_search(world, queue):
-    root = TreeNode(world, None)
+def initialize_search(method, state, queue):
+    root = TreeNode(state, None, 0, 0, 0)
 
-    queue.put(root)
+    if method == 'astar':
+        queue.put((0, root))
+    else:
+        queue.put(root)
 
 
 def search(queue, method):
-    visited_nodes = []
+    visited_set = set()
 
     while not queue.empty():
-        current = queue.get()
+        if method == 'astar':
+            curr_f, current = queue.get()
+        else:
+            current = queue.get()
 
-        # print(current)
-        if current.world.is_world_the_goal():
+        print('Curr:', current)
+        if current.state.is_goal():
             return current
 
-        visited_nodes.append(current)
-        current.find_children(visited_nodes)
+        if str(current.state.i_blocks) in visited_set:
+            continue
+
+        current.find_children(method)
+        visited_set.add(str(current.state.i_blocks))
 
         if method == 'depth' or method == 'breadth':
             for child in current.children:

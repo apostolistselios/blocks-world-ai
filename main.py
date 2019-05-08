@@ -6,12 +6,13 @@ Created on Apr 4, 2019
 
 import os
 import utils
+import time
 from search_utils import initialize_search, search
-from block import Block
-from world import World
+from state import WorldState
 
 
 def main():
+    start = time.time()
     os.system('cls' if os.name == 'nt' else 'clear')
 
     args = utils.parse_arguments()
@@ -26,14 +27,18 @@ def main():
     print('INIT:', initial_state)
     print('GOAL:', goal_state)
 
-    blocks = [Block(id) for id in objects]
-    world = World(blocks, goal_state, initial_state)
-    world.blocks = world.initialize_blocks(world.initial_state,  world.blocks)
-    print('WORLD:', world)
+    i_blocks = utils.initialize_blocks(objects, initial_state)
+    # print(i_blocks)
+    g_blocks = utils.initialize_blocks(objects, goal_state)
+    # print(g_blocks)
 
-    initialize_search(world, search_queue)
+    world = WorldState(i_blocks, g_blocks)
+    world.get_possible_moves()
+
+    initialize_search(args.method, world, search_queue)
     solution_node = search(search_queue, args.method)
-    print(f'Solution: {solution_node}')
+    print(f'Solution:{solution_node}')
+    print('Took: ', time.time() - start)
 
     if solution_node != None:
         pass

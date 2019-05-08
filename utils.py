@@ -84,5 +84,31 @@ def get_objects_from_file(data):
     return [block for block in match.group() if block != '-']
 
 
+def initialize_blocks(objects, state):
+    blocks = {id: {'CLEAR': 1, 'ON': -1, 'ONTABLE': 1}
+              for id in objects}
+
+    for state in state:
+        if len(state.split('-')) < 3:
+            position, block = state.split('-')
+        else:
+            position, block, on = state.split('-')
+
+        if position == 'CLEAR':
+            blocks[block][position] = 1
+
+        elif position == 'ONTABLE':
+            blocks[block][position] = 1
+
+        else:
+            blocks[block][position] = on
+            blocks[block]['ONTABLE'] = 0
+
+            if blocks[on]['CLEAR']:
+                blocks[on]['CLEAR'] = 0
+
+    return blocks
+
+
 if __name__ == '__main__':
     pass
