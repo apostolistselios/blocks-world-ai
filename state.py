@@ -3,14 +3,15 @@ import copy
 
 
 class WorldState(object):
-    def __init__(self, i_blocks, g_blocks):
+    def __init__(self, i_blocks, g_blocks, prev_pos):
         self.i_blocks = i_blocks
         self.g_blocks = g_blocks
+        self.prev_pos = prev_pos
 
     def get_possible_moves(self):
         clear_blocks = {key: value for key,
                         value in self.i_blocks.items() if value['CLEAR']}
-        # print(clear_blocks)
+
         moves = []
 
         for block, value in clear_blocks.items():
@@ -44,7 +45,8 @@ class WorldState(object):
         copy_blocks[block]['ON'] = -1
         copy_blocks[on]['CLEAR'] = 1
 
-        return WorldState(copy_blocks, self.g_blocks)
+        prev_pos = (block, on, 'table')
+        return WorldState(copy_blocks, self.g_blocks, prev_pos)
 
     def table_on_clear(self, block, block_):
         """Moves a block on table on a clear block."""
@@ -55,7 +57,8 @@ class WorldState(object):
         copy_blocks[block]['ON'] = block_
         copy_blocks[block_]['CLEAR'] = 0
 
-        return WorldState(copy_blocks, self.g_blocks)
+        prev_pos = (block, 'table', block_)
+        return WorldState(copy_blocks, self.g_blocks, prev_pos)
 
     def clear_on_clear(self, block, block_):
         """Moves a clear block on a clear block."""
@@ -68,7 +71,8 @@ class WorldState(object):
         copy_blocks[below_block]['CLEAR'] = 1
         copy_blocks[block_]['CLEAR'] = 0
 
-        return WorldState(copy_blocks, self.g_blocks)
+        prev_pos = (block, below_block, block_)
+        return WorldState(copy_blocks, self.g_blocks, prev_pos)
 
     def is_goal(self):
         return self.i_blocks == self.g_blocks

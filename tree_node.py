@@ -26,14 +26,12 @@ class TreeNode(object):
                 f = h + g
                 self.children.append(TreeNode(state, self, h=h, g=g, f=f))
                 continue
+            elif method == 'best':
+                h = self.heuristic_1(state)
+                self.children.append(TreeNode(state, self, h=h, g=g, f=h))
+                continue
 
             self.children.append(TreeNode(state, self, h=0, g=g, f=0))
-
-        # for child in self.children:
-        #     child.g = child.parent.g + 1
-        #     if method == 'astar':
-        #         child.h = self.heuristic_1()
-        #         child.f = child.h + child.g
 
     def heuristic_1(self, state):
         """Score the nodes depending on how many blocks are on their goal position."""
@@ -45,14 +43,15 @@ class TreeNode(object):
 
         return score
 
-    def route_to_root(self):
+    def get_path_to_root(self):
         temp_node = copy.copy(self)
-        solution_length = self.g
-        print('Printing solution')
-
+        path = []
         while temp_node.parent is not None:
-            print(temp_node.state)
+            if temp_node.state.prev_pos is not None:
+                path.append(temp_node.state.prev_pos)
             temp_node = temp_node.parent
+
+        return path
 
     def __repr__(self):
         """ Representation of TreeNode object. """

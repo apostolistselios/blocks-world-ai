@@ -15,13 +15,13 @@ def parse_arguments():
     """
 
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('-i', '--input', type=str, default=r'.\problems\probBLOCKS-4-0.pddl.txt',
-                        help='Name of the input file. Default=".\problems\probBLOCKS-4-0.pddl.txt"')
+    parser.add_argument('-i', '--input', type=str, default=r'./problems/probBLOCKS-4-0.pddl.txt',
+                        help='Name of the input file. Default="./problems/probBLOCKS-4-0.pddl.txt"')
     # parser.add_argument('-o', '--output', type=str,
     #                     help='Name of the output file.')
     parser.add_argument('-m', '--method', type=str, default='depth',
-                        help='Searching method: 1)depth = depth first search, 2) breadth = breadth '
-                        + 'first search, 3)best = best first search, 4)astar = astar algorithm. Default=depth.')
+                        help='Searching method: 1)depth = depth first search, 2) breadth = breadth ' +
+                        'first search, 3)best = best first search, 4)astar = astar algorithm. Default=depth.')
 
     return parser.parse_args()
 
@@ -108,6 +108,13 @@ def initialize_blocks(objects, state):
                 blocks[on]['CLEAR'] = 0
 
     return blocks
+
+
+def write_solution(file, solution_path):
+    solution_path.reverse()
+    with open(file, 'w') as file:
+        for move in solution_path:
+            file.write(f'move {move}\n')
 
 
 if __name__ == '__main__':
