@@ -32,17 +32,20 @@ def main():
     g_blocks = utils.initialize_blocks(objects, goal_state)
     # print(g_blocks)
 
-    world = WorldState(i_blocks, g_blocks, None)
-
-    initialize_search(args.method, world, search_queue)
-    solution_node = search(search_queue, args.method)
+    initialize_search(args.method, i_blocks, search_queue)
+    solution_node = search(search_queue, args.method, g_blocks)
     print(f'Solution:{solution_node}')
     print('Took: ', time.time() - start)
 
     if solution_node != None:
-        solution_path = solution_node.get_path_to_root()
-        output_file = f'./solutions/{args.method}-{args.input.lstrip("./prorblems/")}'
-        utils.write_solution(output_file, solution_path)
+        solution_path = solution_node.get_moves_to_solution()
+        try:
+            output_file = f'./solutions/{args.method}-{args.input.lstrip("./prorblems/")}'
+            utils.write_solution(output_file, solution_path)
+        except FileNotFoundError:
+            output_file = '.\solutions\\' + args.method + \
+                '-' + args.input.lstrip(r".\prorblems\\")
+            utils.write_solution(output_file, solution_path)
     else:
         print('No solution')
 

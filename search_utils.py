@@ -1,8 +1,12 @@
 from tree_node import TreeNode
+from state import WorldState
 
 
-def initialize_search(method, state, queue):
-    root = TreeNode(state, None, 0, 0, 0)
+def initialize_search(method, i_blocks, queue):
+    """Initializes the root of the Tree and the search queue based
+    on the search method."""
+
+    root = TreeNode(i_blocks, None, None, 0, 0, 0)
 
     if method == 'astar' or method == 'best':
         queue.put((0, root))
@@ -10,7 +14,8 @@ def initialize_search(method, state, queue):
         queue.put(root)
 
 
-def search(queue, method):
+def search(queue, method, goal):
+    """Searches the tree for a solution based on the search method."""
     visited_set = set()
 
     while not queue.empty():
@@ -20,14 +25,14 @@ def search(queue, method):
             current = queue.get()
 
         # print('Curr:', current)
-        if current.state.is_goal():
+        if current.is_goal(goal):
             return current
 
-        if str(current.state.i_blocks) in visited_set:
+        if str(current.state) in visited_set:
             continue
 
-        current.find_children(method)
-        visited_set.add(str(current.state.i_blocks))
+        current.find_children(method, goal)
+        visited_set.add(str(current.state))
 
         for child in current.children:
             if method == 'depth' or method == 'breadth':

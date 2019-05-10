@@ -11,8 +11,7 @@ METHODS = {
 
 
 def parse_arguments():
-    """ Returns
-    """
+    """Parses the command line arguments."""
 
     parser = argparse.ArgumentParser(description='')
     parser.add_argument('-i', '--input', type=str, default=r'./problems/probBLOCKS-4-0.pddl.txt',
@@ -85,6 +84,8 @@ def get_objects_from_file(data):
 
 
 def initialize_blocks(objects, state):
+    """Initializes a dictionary with blocks based on the state passed in."""
+
     blocks = {id: {'CLEAR': 1, 'ON': -1, 'ONTABLE': 1}
               for id in objects}
 
@@ -111,6 +112,8 @@ def initialize_blocks(objects, state):
 
 
 def write_solution(file, solution_path):
+    """Writes the solution to a file."""
+
     solution_path.reverse()
     with open(file, 'w') as file:
         for move in solution_path:
