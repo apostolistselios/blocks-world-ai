@@ -74,9 +74,6 @@ def initialize_blocks(objects, state):
     blocks = {id: {'CLEAR': 1, 'ON': -1, 'UNDER': -1, 'ONTABLE': 1}
               for id in objects}
 
-    # blocks = {id: {'CLEAR': 1, 'ON': -1, 'ONTABLE': 1}
-    #           for id in objects}
-
     for state in state:
         if len(state.split('-')) < 3:
             position, block = state.split('-')
