@@ -1,0 +1,3 @@
+move (('B', 'table', 'A'), 0)
+move (('C', 'table', 'B'), 0)
+move (('D', 'table', 'C'), 0)

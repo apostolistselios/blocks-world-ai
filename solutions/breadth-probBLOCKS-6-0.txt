@@ -1,0 +1,6 @@
+move (('D', 'A', 'table'), 0)
+move (('F', 'E', 'D'), 0)
+move (('E', 'B', 'F'), 0)
+move (('A', 'C', 'E'), 0)
+move (('B', 'table', 'A'), 0)
+move (('C', 'table', 'B'), 0)

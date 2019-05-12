@@ -1,6 +1,0 @@
-move ('C', 'table', 'B')
-move ('B', 'table', 'A')
-move ('A', 'C', 'E')
-move ('E', 'B', 'F')
-move ('F', 'E', 'D')
-move ('D', 'A', 'table')

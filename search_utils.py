@@ -1,5 +1,5 @@
+import time
 from tree_node import TreeNode
-from state import WorldState
 
 
 def initialize_search(method, i_blocks, queue):
@@ -18,7 +18,8 @@ def search(queue, method, goal):
     """Searches the tree for a solution based on the search method."""
     visited_set = set()
 
-    while not queue.empty():
+    start = time.time()
+    while (not queue.empty()) and (time.time() - start <= 60):
         if method == 'astar' or method == 'best':
             curr_f, current = queue.get()
         else:

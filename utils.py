@@ -10,21 +10,6 @@ METHODS = {
 }
 
 
-def parse_arguments():
-    """Parses the command line arguments."""
-
-    parser = argparse.ArgumentParser(description='')
-    parser.add_argument('-i', '--input', type=str, default=r'./problems/probBLOCKS-4-0.pddl.txt',
-                        help='Name of the input file. Default="./problems/probBLOCKS-4-0.pddl.txt"')
-    # parser.add_argument('-o', '--output', type=str,
-    #                     help='Name of the output file.')
-    parser.add_argument('-m', '--method', type=str, default='depth',
-                        help='Searching method: 1)depth = depth first search, 2) breadth = breadth ' +
-                        'first search, 3)best = best first search, 4)astar = astar algorithm. Default=depth.')
-
-    return parser.parse_args()
-
-
 def load_problem(input):
     """ Loads the problem from the input file. """
 
@@ -86,8 +71,11 @@ def get_objects_from_file(data):
 def initialize_blocks(objects, state):
     """Initializes a dictionary with blocks based on the state passed in."""
 
-    blocks = {id: {'CLEAR': 1, 'ON': -1, 'ONTABLE': 1}
+    blocks = {id: {'CLEAR': 1, 'ON': -1, 'UNDER': -1, 'ONTABLE': 1}
               for id in objects}
+
+    # blocks = {id: {'CLEAR': 1, 'ON': -1, 'ONTABLE': 1}
+    #           for id in objects}
 
     for state in state:
         if len(state.split('-')) < 3:
@@ -102,6 +90,7 @@ def initialize_blocks(objects, state):
             blocks[block][position] = 1
 
         else:
+            blocks[on]['UNDER'] = block
             blocks[block][position] = on
             blocks[block]['ONTABLE'] = 0
 
