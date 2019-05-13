@@ -3,7 +3,6 @@ Created on Apr 4, 2019
 
 @author: Apostolis Tselios
 """
-
 import os
 import utils
 import time
@@ -55,12 +54,19 @@ def main():
     os.system('cls' if os.name == 'nt' else 'clear')  # Clears the terminal.
 
     # Handles the arguments.
-    if len(sys.argv) > 3:
-        print('ERROR: TOO MANY ARGUMENTS!')
-        sys.exit()
-    else:
+    if len(sys.argv) == 3:
+        # If the args are 3 no output file name wasn't specified.
         method = sys.argv[1]
         input_file = sys.argv[2]
+    elif len(sys.argv) == 4:
+        print('ok')
+        # If the args are 4 the output file name was specified.
+        method = sys.argv[1]
+        input_file = sys.argv[2]
+        output_file = sys.argv[3]
+    else:
+        print('ERROR: TOO MANY ARGUMENTS!')
+        sys.exit()
 
     # Initializes the type of queue based on the search method.
     search_queue = utils.METHODS[method]
@@ -94,14 +100,19 @@ def main():
 
         solution_path = solution_node.get_moves_to_solution()
 
-        # Handling the backslashes in order to run cross platform.
-        try:
-            file_name = input_file.split('\\')[-1]
-            output_file = './solutions/' + method + '-' + file_name
-            utils.write_solution(output_file, solution_path)
-        except FileNotFoundError:
-            file_name = input_file.split('/')[-1]
-            output_file = './solutions/' + method + '-' + file_name
+        if sys.argv == 3:
+            # If the output file name was not specified.
+            try:
+                # Handling the paths with forward-slashes and back-slashes.
+                file_name = input_file.split('\\')[-1]
+                output_file = './solutions/' + method + '-' + file_name
+                utils.write_solution(output_file, solution_path)
+            except FileNotFoundError:
+                file_name = input_file.split('/')[-1]
+                output_file = './solutions/' + method + '-' + file_name
+                utils.write_solution(output_file, solution_path)
+        else:
+            # If the output file name is specified.
             utils.write_solution(output_file, solution_path)
     else:
         print('Took: ', time.time() - start)

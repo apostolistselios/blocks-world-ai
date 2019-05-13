@@ -105,8 +105,8 @@ def write_solution(file, solution_path):
 
     solution_path.reverse()
     with open(file, 'w') as file:
-        for move in solution_path:
-            file.write(f'move {move}\n')
+        for i, move in enumerate(solution_path):
+            file.write(f'{i+1}. move {move}\n')
 
 
 if __name__ == '__main__':
