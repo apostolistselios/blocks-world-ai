@@ -14,11 +14,9 @@ class TreeNode(object):
         self.children = []
 
     def find_children(self, method, goal):
-        """ Finds the children of a TreeNode object. If the child
-        has been already visited is not added to the object's children list.
+        """ Finds the children of a TreeNode object. If the child has been
+        already visited is not added to the object's children list."""
 
-        params: visited_nodes
-        """
         moves = self.find_possible_moves()
         for state in moves:
             g = self.g + 1
@@ -108,9 +106,10 @@ class TreeNode(object):
         return copy_blocks, move
 
     def heuristic(self, state, goal):
-        """Score the nodes depending on how many blocks are on their goal position."""
-        score = 0
+        """Score the nodes checking every block if it's in the correct position and if
+        the block under it is in the correct position. (if it has a block under it.)"""
 
+        score = 0
         for block in state:
             if not state[block] == goal[block]:
                 # If the block its not in its goal position add 1 to the score.
@@ -125,6 +124,11 @@ class TreeNode(object):
 
         return score
 
+    def print_state(self):
+        """Prints the current state."""
+        for block, value in self.state.items():
+            print(f'{block}:{value}')
+
     def is_goal(self, goal):
         """Checks if the currents state is equal to the goal."""
         return self.state == goal
@@ -136,24 +140,17 @@ class TreeNode(object):
         path = []
         while temp_node.parent is not None:
             if temp_node.move is not None:
-                path.append((temp_node.move, temp_node.h))
+                path.append(temp_node.move)
             temp_node = temp_node.parent
 
         return path
 
-    def __repr__(self):
-        """ Representation of TreeNode object. """
-
-        return f'{self.state},G={self.g}'
-
     def __lt__(self, other):
         """ Larger than operation of TreeNode object. """
-
         return self.f < other.f
 
     def __eq__(self, other):
         """ Equal operation on TreeNode object. """
-
         if other is not None:
             return self.state == other.state
 

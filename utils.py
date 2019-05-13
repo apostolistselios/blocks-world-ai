@@ -30,42 +30,45 @@ def get_initial_state(data):
     initial_state = []
 
     for line in data:
-        if re.match(r'\A\(:INIT', line) or flag:
-            if re.match(r'\A\(:goal', line):
+        if re.match(r'\A\(:INIT', line, re.I) or flag:
+            flag = True
+            if re.match(r'\A\(:goal', line, re.I):
                 break
 
-            pattern = r'CLEAR-\w{1}|ONTABLE-\w{1}|ON-\w{1}-\w{1}'
-            for match in re.findall(pattern, line):
-                initial_state.append(match)
-
-            flag = True
+            pattern = r'CLEAR-\w{1}\d?|ONTABLE-\w{1}\d?|ON-\w{1}\d?-\w{1}\d?'
+            initial_state.extend(re.findall(pattern, line))
 
     return initial_state
 
 
 def get_goal_state(data):
     """ Extracts the goal state from the data of the input file. """
+
     flag = False
     goal_state = []
 
     for line in data:
-        if re.match(r'\A\(:goal', line) or flag:
+        if re.match(r'\A\(:goal', line, re.I) or flag:
             flag = True
-            for match in re.findall(r'ON-\w{1}-\w{1}', line):
-                goal_state.append(match)
+            pattern = r'CLEAR-\w{1}\d?|ONTABLE-\w{1}\d?|ON-\w{1}\d?-\w{1}\d?'
+            goal_state.extend(re.findall(pattern, line))
 
     return goal_state
 
 
 def get_objects_from_file(data):
     """ Extracts how many and which block objects the problem needs. """
+    flag = False
+    objects = []
+    for line in data:
+        if re.match(r'\A\(:object', line, re.I) or flag:
+            flag = True
+            if re.match(r'\A\(:INIT', line, re.I):
+                break
 
-    for i, line in enumerate(data):
-        if re.match(r'\A\(:object', line):
-            match = re.search(r'(?<=\(:objects)-(\w-)+', data[i])
-            break
+            objects.extend(re.findall(r'\w{1}\d?', line))
 
-    return [block for block in match.group() if block != '-']
+    return objects[7:]
 
 
 def initialize_blocks(objects, state):

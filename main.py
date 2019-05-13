@@ -13,7 +13,6 @@ from tree_node import TreeNode
 
 def search(queue, method, initial, goal):
     """Searches the tree for a solution based on the search method."""
-    start = time.time()
     root = TreeNode(initial, None, None, 0, 0, 0)
 
     if method == 'astar' or method == 'best':
@@ -41,6 +40,7 @@ def search(queue, method, initial, goal):
         current.find_children(method, goal)
         visited_set.add(str(current.state))
 
+        # Add every child in the search queue.
         for child in current.children:
             if method == 'depth' or method == 'breadth':
                 queue.put(child)
@@ -65,7 +65,7 @@ def main():
     # Initializes the type of queue based on the search method.
     search_queue = utils.METHODS[method]
 
-    # Parses the data and gets the objects (blocks), initial state and the goal state.
+    # Parse the data and get the objects (blocks), initial state and the goal state.
     data = utils.load_problem(input_file)
     objects = utils.get_objects_from_file(data)
     initial_state = utils.get_initial_state(data)
@@ -73,24 +73,21 @@ def main():
 
     print('OBJECTS:', objects)
 
-    print('#################### INITIAL STATE ####################')
+    print('\n#################### INITIAL STATE ####################\n')
     print(initial_state)
     i_blocks = utils.initialize_blocks(objects, initial_state)
-    for block, value in i_blocks.items():
-        print(f'{block}:{value}')
 
-    print('#################### GOAL STATE ####################')
+    print('\n#################### GOAL STATE ####################\n')
     print(goal_state)
     g_blocks = utils.initialize_blocks(objects, goal_state)
-    for block, value in g_blocks.items():
-        print(f'{block}:{value}')
 
     solution_node = search(search_queue, method, i_blocks, g_blocks)
 
     if solution_node != None:
         # If a solution is found.
-        print('#################### SOLUTION ####################')
-        print(solution_node)
+        print('\n#################### SOLUTION ####################\n')
+        solution_node.print_state()
+        print(f'Number of moves: {solution_node.g}')
 
         # Calculates the time it took to find the solution.
         print('Took: ', time.time() - start)
@@ -107,6 +104,7 @@ def main():
             output_file = './solutions/' + method + '-' + file_name
             utils.write_solution(output_file, solution_path)
     else:
+        print('Took: ', time.time() - start)
         print('############ ONE MINUTE PASSED AND NO SOLUTION WAS FOUND ############')
         sys.exit()
 
