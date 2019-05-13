@@ -1,7 +1,0 @@
-1. move ('C', 'E', 'table')
-2. move ('E', 'B', 'table')
-3. move ('B', 'A', 'table')
-4. move ('D', 'table', 'C')
-5. move ('B', 'table', 'D')
-6. move ('E', 'table', 'B')
-7. move ('A', 'table', 'E')

@@ -59,7 +59,6 @@ def main():
         method = sys.argv[1]
         input_file = sys.argv[2]
     elif len(sys.argv) == 4:
-        print('ok')
         # If the args are 4 the output file name was specified.
         method = sys.argv[1]
         input_file = sys.argv[2]
@@ -100,7 +99,7 @@ def main():
 
         solution_path = solution_node.get_moves_to_solution()
 
-        if sys.argv == 3:
+        if len(sys.argv) == 3:
             # If the output file name was not specified.
             try:
                 # Handling the paths with forward-slashes and back-slashes.

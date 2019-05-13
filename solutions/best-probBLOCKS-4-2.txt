@@ -1,3 +1,0 @@
-1. move ('C', 'B', 'D')
-2. move ('B', 'table', 'C')
-3. move ('A', 'table', 'B')
