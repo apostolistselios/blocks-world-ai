@@ -3,15 +3,15 @@ import argparse
 from queue import Queue, LifoQueue, PriorityQueue
 
 METHODS = {
-    'breadth': Queue(),
-    'depth': LifoQueue(),
-    'best': PriorityQueue(),
-    'astar': PriorityQueue()
+    'breadth': Queue(),  # FIFO queue for BFS.
+    'depth': LifoQueue(),  # LIFO queue for DFS.
+    'best': PriorityQueue(),  # PriorityQueue for Best First.
+    'astar': PriorityQueue()  # PriorityQueue for Astar.
 }
 
 
 def load_problem(input):
-    """ Loads the problem from the input file. """
+    """ Loads the problem from the input file and replaces spaces with a hyphen. """
 
     data = []
     with open(input, 'r') as file:

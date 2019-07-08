@@ -36,11 +36,13 @@ class TreeNode(object):
     def find_possible_moves(self):
         """Finds and returns the possible moves in the current state."""
 
+        # Initialize a dictionary with the clear blocks.
         clear_blocks = {key: value for key,
                         value in self.state.items() if value['CLEAR']}
 
         moves = []
         for block, value in clear_blocks.items():
+            # For every clear block.
             if value['ON'] != -1:
                 # Move a clear Block on table.
                 on = value['ON']
@@ -66,6 +68,7 @@ class TreeNode(object):
     def clear_on_table(self, block, on):
         """ Move a clear block that is on another block on table. """
 
+        # A copy of the current state.
         copy_blocks = {key: self.state[key].copy() for key in self.state}
 
         copy_blocks[block]['ONTABLE'] = True
@@ -79,6 +82,7 @@ class TreeNode(object):
     def table_on_clear(self, block, block_):
         """Moves a block that is on table on a clear block."""
 
+        # A copy of the current state.
         copy_blocks = {key: self.state[key].copy() for key in self.state}
 
         copy_blocks[block]['ONTABLE'] = False
@@ -92,6 +96,7 @@ class TreeNode(object):
     def clear_on_clear(self, block, block_):
         """Moves a clear block that is on a block on another clear block."""
 
+        # A copy of the current state.
         copy_blocks = {key: self.state[key].copy() for key in self.state}
 
         below_block = copy_blocks[block]['ON']

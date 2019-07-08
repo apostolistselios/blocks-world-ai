@@ -11,19 +11,22 @@ from tree_node import TreeNode
 
 
 def search(queue, method, initial, goal):
-    """Searches the tree for a solution based on the search method."""
+    """Searches the tree for a solution based on the search algorithm."""
     root = TreeNode(initial, None, None, 0, 0, 0)
 
     if method == 'astar' or method == 'best':
+        # If the method uses a heuristic a PriorityQueue is initialized with the root.
         queue.put((0, root))
     else:
         queue.put(root)
 
-    visited_set = set()
+    visited_set = set()  # Set of visited states.
     start = time.time()
     while (not queue.empty()) and (time.time() - start <= 60):
         # While the queue is not empty and a minutes hasn't passed.
+
         if method == 'astar' or method == 'best':
+            # PriorityQueue .get() method returns the priority number and the element.
             curr_f, current = queue.get()
         else:
             current = queue.get()
@@ -32,12 +35,12 @@ def search(queue, method, initial, goal):
             return current
 
         if str(current.state) in visited_set:
-            # If this state has been visited before don't add to the children
+            # If this state has been visited before don't add it to the children
             # and continue with the next child.
             continue
 
         current.find_children(method, goal)
-        visited_set.add(str(current.state))
+        visited_set.add(str(current.state))  # Mark the state as visited.
 
         # Add every child in the search queue.
         for child in current.children:
