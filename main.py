@@ -65,7 +65,7 @@ def main():
         output_file = sys.argv[3]
     else:
         print(
-            f'Usage: {sys.argv[0]} <search algorithm> <input file name> <output file name>')
+            f'Usage: {sys.argv[0]} <search algorithm> <problem file name> <solution file name>')
         print('- search algorithms: depth (Depth First), breadth (Breadth First), best (Best First), astar (A*)')
         sys.exit()
 
