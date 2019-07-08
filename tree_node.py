@@ -68,9 +68,9 @@ class TreeNode(object):
 
         copy_blocks = {key: self.state[key].copy() for key in self.state}
 
-        copy_blocks[block]['ONTABLE'] = 1
+        copy_blocks[block]['ONTABLE'] = True
         copy_blocks[block]['ON'] = -1
-        copy_blocks[on]['CLEAR'] = 1
+        copy_blocks[on]['CLEAR'] = True
         copy_blocks[on]['UNDER'] = -1
         move = (block, on, 'table')
 
@@ -81,10 +81,10 @@ class TreeNode(object):
 
         copy_blocks = {key: self.state[key].copy() for key in self.state}
 
-        copy_blocks[block]['ONTABLE'] = 0
+        copy_blocks[block]['ONTABLE'] = False
         copy_blocks[block]['ON'] = block_
         copy_blocks[block_]['UNDER'] = block
-        copy_blocks[block_]['CLEAR'] = 0
+        copy_blocks[block_]['CLEAR'] = False
         move = (block, 'table', block_)
 
         return copy_blocks, move
@@ -97,10 +97,10 @@ class TreeNode(object):
         below_block = copy_blocks[block]['ON']
 
         copy_blocks[block]['ON'] = block_
-        copy_blocks[below_block]['CLEAR'] = 1
+        copy_blocks[below_block]['CLEAR'] = True
         copy_blocks[below_block]['UNDER'] = -1
         copy_blocks[block_]['UNDER'] = block
-        copy_blocks[block_]['CLEAR'] = 0
+        copy_blocks[block_]['CLEAR'] = False
         move = (block, below_block, block_)
 
         return copy_blocks, move

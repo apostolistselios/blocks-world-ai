@@ -64,7 +64,9 @@ def main():
         input_file = sys.argv[2]
         output_file = sys.argv[3]
     else:
-        print('ERROR: TOO MANY ARGUMENTS!')
+        print(
+            f'Usage: {sys.argv[0]} <search algorithm> <input file name> <output file name>')
+        print('- search algorithms: depth (Depth First), breadth (Breadth First), best (Best First), astar (A*)')
         sys.exit()
 
     # Initializes the type of queue based on the search method.

@@ -74,7 +74,7 @@ def get_objects_from_file(data):
 def initialize_blocks(objects, state):
     """Initializes a dictionary with blocks based on the state passed in."""
 
-    blocks = {id: {'CLEAR': 1, 'ON': -1, 'UNDER': -1, 'ONTABLE': 1}
+    blocks = {id: {'CLEAR': True, 'ON': -1, 'UNDER': -1, 'ONTABLE': True}
               for id in objects}
 
     for state in state:
@@ -84,18 +84,18 @@ def initialize_blocks(objects, state):
             position, block, on = state.split('-')
 
         if position == 'CLEAR':
-            blocks[block][position] = 1
+            blocks[block][position] = True
 
         elif position == 'ONTABLE':
-            blocks[block][position] = 1
+            blocks[block][position] = True
 
         else:
             blocks[on]['UNDER'] = block
             blocks[block][position] = on
-            blocks[block]['ONTABLE'] = 0
+            blocks[block]['ONTABLE'] = False
 
             if blocks[on]['CLEAR']:
-                blocks[on]['CLEAR'] = 0
+                blocks[on]['CLEAR'] = False
 
     return blocks
 
